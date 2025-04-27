@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:layout_height="wrap_content"
+     android:layout_width="match_parent"
+     android:layout_margin="8dp"
+     app:cardElevation="4dp"
+     app:cardCornerRadius="8dp">
+
+    <LinearLayout
+         android:layout_height="wrap_content"
+         android:layout_width="match_parent"
+         android:padding="16dp"
+         android:orientation="vertical">
+
+        <ImageView
+             android:layout_height="100dp"
+             android:layout_width="100dp"
+             android:id="@+id/svgImageView"
+             android:layout_gravity="center_horizontal" />
+
+        <TextView
+             android:layout_height="wrap_content"
+             android:layout_width="match_parent"
+             android:textAlignment="center"
+             android:textAppearance="@style/TextAppearance.AppCompat.Title"
+             android:layout_marginTop="8dp"
+             android:id="@+id/svgTitle" />
+
+        <com.google.android.material.button.MaterialButton
+             android:layout_height="wrap_content"
+             android:layout_width="wrap_content"
+             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+             android:layout_marginTop="16dp"
+             android:id="@+id/downloadButton"
+             android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

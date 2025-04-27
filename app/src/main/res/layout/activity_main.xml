@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:layout_height="match_parent"
+     android:layout_width="match_parent"
+     android:padding="8dp"
+     android:orientation="vertical">
+
+    <LinearLayout
+         android:layout_height="wrap_content"
+         android:layout_width="match_parent"
+         android:layout_marginBottom="8dp"
+         android:orientation="horizontal">
+
+        <EditText 
+             android:layout_height="wrap_content"
+             android:layout_width="0dp"
+             android:imeOptions="actionSearch"
+             android:hint="جستجوی آیکون..."
+             android:layout_weight="1"
+             android:inputType="text"
+             android:id="@+id/searchInput" />
+
+        <com.google.android.material.button.MaterialButton
+             android:layout_height="wrap_content"
+             android:layout_width="wrap_content"
+             
+             android:id="@+id/searchButton"
+             android:text="جستجو" />
+
+    </LinearLayout>
+
+    <ProgressBar
+         android:layout_height="wrap_content"
+         android:layout_width="wrap_content"
+         android:visibility="gone"
+         android:id="@+id/progressBar"
+         android:layout_gravity="center" />
+
+    <androidx.recyclerview.widget.RecyclerView
+         android:layout_height="match_parent"
+         android:layout_width="match_parent"
+         android:clipToPadding="false"
+         android:id="@+id/recyclerView" />
+
+</LinearLayout>
