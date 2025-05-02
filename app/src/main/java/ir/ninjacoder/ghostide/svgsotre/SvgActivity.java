@@ -5,18 +5,14 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import ir.ninjacoder.ghostide.svgsotre.adapter.SvgAdapter;
+import ir.ninjacoder.ghostide.svgsotre.databinding.ActivitySvgBinding;
 import ir.ninjacoder.ghostide.svgsotre.model.SvgItem;
 import ir.ninjacoder.ghostide.svgsotre.tasks.SvgExtractor;
 
-import com.google.android.material.button.MaterialButton;
 import java.lang.ref.WeakReference;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -26,47 +22,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SvgActivity extends AppCompatActivity implements SvgAdapter.OnItemClickListener {
-  private RecyclerView recyclerView;
   private SvgAdapter adapter;
-  private ProgressBar progressBar;
-  private EditText searchInput;
-  private MaterialButton searchButton;
+  private ActivitySvgBinding bind;
   private static final int STORAGE_PERMISSION_CODE = 101;
   private List<SvgItem> popularItems = new ArrayList<>();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-        
+    bind = ActivitySvgBinding.inflate(getLayoutInflater());
+    setContentView(bind.getRoot());
 
     setupViews();
     loadPopularIcons();
   }
 
   private void setupViews() {
-    recyclerView = findViewById(R.id.recyclerView);
-    progressBar = findViewById(R.id.progressBar);
-    searchInput = findViewById(R.id.searchInput);
-    searchButton = findViewById(R.id.searchButton);
 
-    // تنظیم RecyclerView با Grid 2 ستونه
-    recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+    bind.recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
     adapter = new SvgAdapter(new ArrayList<>(), this);
-    recyclerView.setAdapter(adapter);
-
-    // تنظیم کلیک لیسنر برای دکمه جستجو
-    searchButton.setOnClickListener(
-        v -> {
-          String query = searchInput.getText().toString().trim();
-          if (!query.isEmpty()) {
-            searchIcons(query);
-          }
-        });
+    bind.recyclerView.setAdapter(adapter);
+    bind.searchInput.setHint("search icon");
+            bind.fab.setOnClickListener(c ->{
+                String arg0 = bind.searchInput.getEditText().getText().toString();
+                if (!arg0.toString().isEmpty()) {
+                  searchIcons(arg0.toString());
+                }
+            });
   }
 
   private void loadPopularIcons() {
-    progressBar.setVisibility(View.VISIBLE);
+    bind.progressBar.setVisibility(View.VISIBLE);
     new AsyncTask<Void, Void, List<SvgItem>>() {
       @Override
       protected List<SvgItem> doInBackground(Void... voids) {
@@ -82,7 +68,7 @@ public class SvgActivity extends AppCompatActivity implements SvgAdapter.OnItemC
 
       @Override
       protected void onPostExecute(List<SvgItem> result) {
-        progressBar.setVisibility(View.GONE);
+        bind.progressBar.setVisibility(View.GONE);
         if (result != null && !result.isEmpty()) {
           popularItems = result;
           adapter.updateData(result);
@@ -92,7 +78,7 @@ public class SvgActivity extends AppCompatActivity implements SvgAdapter.OnItemC
   }
 
   private void searchIcons(String query) {
-    progressBar.setVisibility(View.VISIBLE);
+    bind.progressBar.setVisibility(View.VISIBLE);
     new AsyncTask<String, Void, List<SvgItem>>() {
       @Override
       protected List<SvgItem> doInBackground(String... queries) {
@@ -107,7 +93,7 @@ public class SvgActivity extends AppCompatActivity implements SvgAdapter.OnItemC
 
       @Override
       protected void onPostExecute(List<SvgItem> result) {
-        progressBar.setVisibility(View.GONE);
+        bind.progressBar.setVisibility(View.GONE);
         if (result != null && !result.isEmpty()) {
           adapter.updateData(result);
         } else {
@@ -150,8 +136,6 @@ public class SvgActivity extends AppCompatActivity implements SvgAdapter.OnItemC
           new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
     }
   }
-
-  
 
   class DownloadSvgTask extends AsyncTask<SvgItem, Void, Boolean> {
     private WeakReference<Context> contextRef;
